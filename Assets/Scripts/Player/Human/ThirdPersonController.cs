@@ -350,7 +350,7 @@ namespace StarterAssets
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Target") && Time.time >= nextPickupTime)
+            if (other.gameObject.CompareTag("Target"))
             {
                 currentTarget = other;
                 ShowPickupPrompt(true);
@@ -360,7 +360,7 @@ namespace StarterAssets
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.gameObject.CompareTag("Target") && Time.time >= nextPickupTime)
+            if (other.gameObject.CompareTag("Target"))
             {
                 currentTarget = other;
                 ShowPickupPrompt(true);
@@ -370,7 +370,7 @@ namespace StarterAssets
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("Target") && other == currentTarget)
+            if (other.gameObject.CompareTag("Target"))
             {
                 currentTarget = null;
                 ShowPickupPrompt(false);
@@ -380,9 +380,6 @@ namespace StarterAssets
 
         private void Pickup()
         {
-            if (!canPickup)
-                return;
-
             canPickup = false;
             photonView.RPC("SetPlayerIK_FlameThrower", RpcTarget.All, false);
             _animator.SetTrigger("pickup");
@@ -403,7 +400,6 @@ namespace StarterAssets
             }
 
             StartCoroutine(ActivatePlayerIK_FlameThrowerAfterDelay());
-            nextPickupTime = Time.time + 6f;
         }
         [PunRPC]
         public void SetPlayerIK_FlameThrower(bool state)

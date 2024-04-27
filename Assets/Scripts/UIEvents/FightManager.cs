@@ -434,6 +434,7 @@ public class FightManager : MonoBehaviourPunCallbacks
 
     public void RespawnCheese()
     {
+        Debug.Log("enter respawn");
         Game.uiManager.CloseAllUI();
         respawnCheeseUI = Game.uiManager.ShowUI<CheeseFightUI>("CheeseFightUI");
         respawnCheeseUI.setRemainingLife(targetScore);
@@ -441,12 +442,15 @@ public class FightManager : MonoBehaviourPunCallbacks
 
         // respawn the player
         GameObject playerObject = PhotonNetwork.Instantiate("Cheese", respawnPoint.position, Quaternion.identity);
+        Debug.Log("playerObect" + playerObject.name);
         _localPlayer = playerObject;
         // minimap icon display
         _miniMapPhotonView.RPC("AddPlayerIconRPC", RpcTarget.All, playerObject.GetComponent<PhotonView>().ViewID);
 
         // camera follow
         _vc.Follow = playerObject.transform.Find("PlayerRoot").transform;
+
+        Debug.Log("_vc.Follow: " + _vc.Follow.name);
 
         // display the player name
         PlayerNameDisplay nameDisplay = playerObject.GetComponentInChildren<PlayerNameDisplay>();

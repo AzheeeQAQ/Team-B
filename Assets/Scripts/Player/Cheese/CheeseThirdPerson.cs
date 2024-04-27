@@ -538,10 +538,10 @@ public class CheeseThirdPerson : MonoBehaviourPun, IPunObservable
             {
                 textGameObject.SetActive(false);
             }
-            else
-            {
-                Debug.LogError("TextGameObject not found in the scene!");
-            }
+            //else
+            //{
+            //    //Debug.LogError("TextGameObject not found in the scene!");
+            //}
 
             EnemyDetector enemyDetector = GetComponentInChildren<EnemyDetector>();
             if (enemyDetector != null)
