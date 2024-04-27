@@ -6,7 +6,8 @@ public class RespawnUI : MonoBehaviour
 {
     void Start()
     {
-        //StartCoroutine(RespawnCountdown(5));
+        StartCoroutine(RespawnCountdown(5));
+        Cursor.visible = false;
         GameObject fightManagerObject = GameObject.Find("fight");
 
         if (fightManagerObject == null)
@@ -18,30 +19,18 @@ public class RespawnUI : MonoBehaviour
             FightManager fightManager = fightManagerObject.GetComponent<FightManager>();
             fightManager.RespawnCheese();
         }
-        Cursor.visible = false;
     }
 
-    //IEnumerator RespawnCountdown(int seconds)
-    //{
-    //    while (seconds > 0)
-    //    {
-    //        Game.uiManager.ShowUI<MaskUI>("MaskUI").ShowMask("You will be respawn in " + seconds + " sec...");
-    //        yield return new WaitForSeconds(1);
-    //        seconds--;
-    //    }
+    IEnumerator RespawnCountdown(int seconds)
+    {
+        while (seconds > 0)
+        {
+            Game.uiManager.ShowUI<MaskUI>("MaskUI").ShowMask("You will be respawn in " + seconds + " sec...");
+            yield return new WaitForSeconds(1);
+            seconds--;
+        }
 
-    //    Game.uiManager.ShowUI<MaskUI>("MaskUI").ShowMask("You will be respawn in " + seconds + " sec...");
+        Game.uiManager.ShowUI<MaskUI>("MaskUI").ShowMask("You will be respawn in " + seconds + " sec...");        
+    }
 
-    //    GameObject fightManagerObject = GameObject.Find("fight");
-
-    //    if(fightManagerObject == null)
-    //    {
-    //        Debug.Log("fightManagerObject is null");
-    //    }
-    //    if (fightManagerObject != null)
-    //    {
-    //        FightManager fightManager = fightManagerObject.GetComponent<FightManager>();
-    //        fightManager.RespawnCheese();
-    //    }
-    //}
 }

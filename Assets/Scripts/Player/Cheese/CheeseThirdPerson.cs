@@ -75,7 +75,6 @@ public class CheeseThirdPerson : MonoBehaviourPun, IPunObservable
         public bool isDie = false;
 
         private FightManager _fightManager;
-
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -528,11 +527,13 @@ public class CheeseThirdPerson : MonoBehaviourPun, IPunObservable
         [PunRPC]
         public void showDeiUI()
         {
-            isDie = true;
+            //isDie = true;
+
             Game.uiManager.CloseAllUI();
             Game.uiManager.ShowUI<RespawnUI>("RespawnUI");
+            
+            photonView.RPC("HideCheeseAndSmell", RpcTarget.OthersBuffered);
             _miniMapController.photonView.RPC("HidePlayerIconRPC", RpcTarget.All, photonView.ViewID);
-            photonView.RPC("HideCheeseAndSmell", RpcTarget.All);
             GameObject textGameObject = GameObject.Find("DoorOpenText");
             if (textGameObject != null)
             {
@@ -542,16 +543,21 @@ public class CheeseThirdPerson : MonoBehaviourPun, IPunObservable
             //{
             //    //Debug.LogError("TextGameObject not found in the scene!");
             //}
-
+            
             EnemyDetector enemyDetector = GetComponentInChildren<EnemyDetector>();
             if (enemyDetector != null)
             {
                 enemyDetector.ResetMaterials();
             }
-            PhotonNetwork.Destroy(gameObject);
+            //PhotonNetwork.Destroy(gameObject);
             Cursor.lockState = CursorLockMode.None;
+            
             Cursor.visible = true;
+
+            PhotonNetwork.Destroy(gameObject);
         }
+
+      
 
         [PunRPC]
         private void HideCheeseAndSmell()
@@ -560,6 +566,7 @@ public class CheeseThirdPerson : MonoBehaviourPun, IPunObservable
             _cheeseSmellController.setEnable(false);
 
             gameObject.SetActive(false);
+            //PhotonNetwork.Destroy(gameObject);
 
             // 停止粒子系统
             //_cheeseSmellController.StopParticles();

@@ -104,7 +104,7 @@ public class MiniMapController : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.LogError("Unable to find PhotonView with ID: " + viewID);
+            //Debug.LogError("Unable to find PhotonView with ID: " + viewID);
         }
     }
 }

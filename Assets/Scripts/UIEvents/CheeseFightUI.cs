@@ -14,7 +14,7 @@ public class CheeseFightUI : MonoBehaviour
     private Transform _tutorialPanel;
     private int _remainingLife = 0;
     private TMP_Text _remainingLifeText;
-    
+    private GameObject _respawn;
     //private AudioSource _countdownMusic;
     //private AudioClip _last10SecondsSound;
     //private bool _last10SecondsSoundPlayed = false;
@@ -33,18 +33,26 @@ public class CheeseFightUI : MonoBehaviour
             Instance = this;
         }
 
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
     
     private void Start()
     {
+
+        Debug.Log("enter cheeseFightUI");
         //_countdownMusic = transform.Find("countdownMusic").GetComponent<AudioSource>();
         //_last10SecondsSound = Resources.Load<AudioClip>("10s");
         _remainingLifeText = transform.Find("RemainingLife").GetComponent<TMP_Text>();
         _remainingLifeText.text = _remainingLife + "";
         _tutorialPanel = transform.Find($"TutorialPanel");
         StartCoroutine(BeginStartSequence());
+        _respawn = transform.Find("Respawn").gameObject;
+        if(_respawn == null)
+        {
+            Debug.Log("start respawn is null");
+        }
     }
     public void setRemainingLife(int remainingLife)
     {
@@ -111,6 +119,8 @@ public class CheeseFightUI : MonoBehaviour
             currentChild.gameObject.SetActive(false);
         }
     }
+
+    
 
     //public AudioClip countSound;
     //public AudioClip timesupSound;

@@ -58,6 +58,8 @@ public class FightManager : MonoBehaviourPunCallbacks
     // player's controller
     private GameObject _localPlayer;
 
+    private object instantiateLock = new object();
+
     void Awake()
     {
         _miniMapPhotonView = miniMapController.GetComponent<PhotonView>();
@@ -232,8 +234,10 @@ public class FightManager : MonoBehaviourPunCallbacks
 
     void SpawnPlayers()
     {
+
+        //Debug.Log("Local player number: " + PhotonNetwork.LocalPlayer.ActorNumber);
         // get the player name
-        if(!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("PlayerName", out object name))
+        if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("PlayerName", out object name))
         {
             playerName = "Player" + PhotonNetwork.LocalPlayer.ActorNumber;
         }
@@ -434,16 +438,19 @@ public class FightManager : MonoBehaviourPunCallbacks
 
     public void RespawnCheese()
     {
+   
         Debug.Log("enter respawn");
+        Debug.Log("localplayer: " + PhotonNetwork.LocalPlayer);
         Game.uiManager.CloseAllUI();
         respawnCheeseUI = Game.uiManager.ShowUI<CheeseFightUI>("CheeseFightUI");
         respawnCheeseUI.setRemainingLife(targetScore);
         Transform respawnPoint = _cheeseAvailablePoints[Random.Range(0, _cheeseAvailablePoints.Count)];
-
+        GameObject playerObject;
         // respawn the player
-        GameObject playerObject = PhotonNetwork.Instantiate("Cheese", respawnPoint.position, Quaternion.identity);
-        Debug.Log("playerObect" + playerObject.name);
+        
+        playerObject = PhotonNetwork.Instantiate("RespawnCheese", respawnPoint.position, Quaternion.identity);
         _localPlayer = playerObject;
+
         // minimap icon display
         _miniMapPhotonView.RPC("AddPlayerIconRPC", RpcTarget.All, playerObject.GetComponent<PhotonView>().ViewID);
 
@@ -466,6 +473,13 @@ public class FightManager : MonoBehaviourPunCallbacks
             recorder.InterestGroup = 2;
         }
         
-         
+
+       
+  
+     
     }
+
+    
+
+
 }
